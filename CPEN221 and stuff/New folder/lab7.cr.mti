@@ -1,0 +1,120 @@
+C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/lab7_top_tb.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/lab7_top_tb.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module lab7_top_tb
+
+Top level modules:
+	lab7_top_tb
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/Shifter.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/Shifter.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module Shifter
+
+Top level modules:
+	Shifter
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/vDFF.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/vDFF.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module vDFF
+
+Top level modules:
+	vDFF
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/writebackMUX.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/writebackMUX.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module writebackMUX
+
+Top level modules:
+	writebackMUX
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/datapath.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/datapath.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module datapath
+
+Top level modules:
+	datapath
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/lab6_top.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/lab6_top.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module lab7_top
+
+Top level modules:
+	lab7_top
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/lab7_top.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/lab7_top.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module lab7_top
+
+Top level modules:
+	lab7_top
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/statusregister.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/statusregister.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module statusregister
+
+Top level modules:
+	statusregister
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/plregister.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/plregister.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module plregister
+
+Top level modules:
+	plregister
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/ALU.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/ALU.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module ALU
+-- Compiling module AddSub
+
+Top level modules:
+	ALU
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/multiplexer.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/multiplexer.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module multiplex
+
+Top level modules:
+	multiplex
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/regfile.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/regfile.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module regfile
+-- Compiling module register
+-- Compiling module ClockImpl
+-- Compiling module MUXreg
+-- Compiling module Dec
+
+Top level modules:
+	regfile
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/PC_RAM_tb.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/PC_RAM_tb.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module PC_RAM_tb
+
+Top level modules:
+	PC_RAM_tb
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/RAM.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/RAM.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module RAM
+
+Top level modules:
+	RAM
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/InstructionDecoder.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/InstructionDecoder.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module Instructdecode
+-- Compiling module MUX3_3
+
+Top level modules:
+	Instructdecode
+
+} {} {}} C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/PC_RAM.v {1 {vlog -work work -stats=none C:/Users/mingy/Documents/University/UBC/CPEN211/lab7/PC_RAM.v
+Model Technology ModelSim ALTERA vlog 10.3d Compiler 2014.10 Oct  7 2014
+-- Compiling module PC_RAM
+-- Compiling module branch
+
+Top level modules:
+	PC_RAM
+
+} {} {}}

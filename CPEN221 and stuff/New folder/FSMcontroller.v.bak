@@ -1,0 +1,143 @@
+//-----------------------------------------------------------------------------------------------
+// FSM controller aka CPU
+// A finite state machine which controls the  inputs of all the other components in the 
+// datapath at any given clock cycle.
+// Input is determined by op, opcode, and rst, which are instructions from the Instructional
+// register, or reset, if we want the state machine to reset.
+// Output: Includes many inputs into the regfile and datafile from lab5, as well as inputs
+// into the PC/RAM, and Instructional Decoder
+//
+//-----------------------------------------------------------------------------------------------
+
+module cpu (op, opcode, rst, loads, nsel, msel, mwrite, loadir, clk, bsel, asel, loada, loadb, loadc, vsel, write, execb, incp, tsel);
+
+  input[2:0] opcode;
+  input clk;
+  input[1:0] op;
+  input[0:0] rst;
+  output[0:0] loads, loadir,  msel, mwrite, loada, loadb, loadc, asel, bsel, write,  execb, incp, tsel;
+ 
+  output[3:0] vsel;
+  output[2:0] nsel;
+  
+  reg[0:0] loads, loadir, msel, mwrite, loada, loadb, loadc, asel, bsel, write, execb, incp, tsel;
+  reg [2:0] next_state, nsel;
+  reg[3:0] vsel;
+  wire[2:0] connect, state;
+  
+  //flip flop of the finite state machine
+  vDFF #(3) v1(clk, next_state, state);
+  assign connect = state;
+  
+  // defining all the states
+  `define S0 3'b000
+  `define S1 3'b001
+  `define S2 3'b010
+  `define S3 3'b011
+  `define S4 3'b100
+  `define S5 3'b101
+  `define S6 3'b110
+  `define S7 3'b111
+  
+  // first logic block which determines the next state based on current input and current state
+  always@(*) begin
+    casex({opcode, op, rst, connect})
+      9'bxxxxx1xxx: next_state <= `S0; //to Set
+      9'bxxxxx0000: next_state <=  `S1; //to loadIR
+      9'bxxxxx0001: next_state <=  `S2; //to loadpc
+      9'bxxxxx0010: next_state <= `S3; //to ReadRn
+      9'b001000011: next_state <= `S4; //to execb = 1
+      9'b001000100: next_state <= `S5; //to wait for PC ram
+      9'b001000101: next_state <= `S1; //to loadIR
+      9'b110100011: next_state <= `S4; //nextstate to WriteRnorRd MOV1
+      9'b110100100: next_state <= `S5; //nextstate to loadir MOV1
+      9'b110100101: next_state <= `S1; //nextstate to loadir MOV1
+      9'b101xx0011: next_state <= `S4; //nextstate to ReadRm ALU
+      9'b101xx0100: next_state <= `S5; //nextstate to ALU ALU
+      9'b101010101: next_state <= `S1; //nextstate to LoadIR CMP
+      9'b1011x0101: next_state <= `S6; //nextstate to WriteRnorRd 
+      9'b101000101: next_state <= `S6; //nextstate to WriteRnorRdALU
+      9'b1011x0110: next_state <= `S7; //nextstate to loadIR ALU
+      9'b101111110: next_state <= `S7; //nextstate to loadIR ALU
+      9'b1011x0111: next_state <= `S1; //nextstate to loadIR ALU
+      9'b101111111: next_state <= `S1; //nextstate to loadIR ALU
+      9'b100000011: next_state <= `S4; //nextstate to ALU STRLDR   
+      9'b011000011: next_state <= `S4; //nextstate to ALU STRLDR
+      9'b011000100: next_state <= `S5; //nextstate to msel=1 STRLDR
+      9'b100000100: next_state <= `S5; //nextstate to msel=1 STRLDR
+      9'b011000101: next_state <= `S6; //nextstate to write LDR
+      9'b100000101: next_state <= `S6; //nextstate readRd STR
+      9'b011000111: next_state <= `S7; //nextstate to LoadIR
+      9'b011000110: next_state <= `S1; //nextstate to LoadIR
+      9'b100000110: next_state <= `S7; //nextstate mwrite=1
+      9'b100000111: next_state <= `S1; //nextstate LoadIR
+      9'b1110xx000: next_state <= `S0; //nextstate HALT
+      default: next_state <= `S0; //default
+    endcase
+  end
+  
+  // Second logic block which determines output based on current state and input
+  always@(*)begin
+    casex({opcode, op, state})
+    8'b0xxxx000: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001; // Set PC=0
+    8'bx0xxx000: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001; // Set PC=0
+    8'bxx0xx000: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001; // Set PC=0
+    8'b011xx001: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b10001101000000000001; // LoadIR
+    8'b00100001: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b10001101000000000001; // LoadIR B
+    8'b10xxx001: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b10001101000000000001; // LoadIR
+    8'b1x0xx001: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b10001101000000000001; // LoadIR
+    8'b10xxx010: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001; //Update PC
+    8'b1x0xx010: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001; //Update PC
+    8'b011xx010: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001; //Update PC
+    8'b00100010: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001; //Update PC B
+    8'b10xxx011: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b01001101000010000001; //ReadRn
+    8'b110xx011: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b01001101000000000001; //ReadRn MOV
+    8'b011xx011: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b01001101000010000001; //ReadRn
+    8'b00100011: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b01001101000010000001; //ReadRn branch
+    8'b11010100: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} = 20'b00001101000011000011; //WriteRd MOV
+    8'b11010101: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} = 20'b00001101000011000001; //WriteRd MOV
+    8'b101xx100: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00101101001000000001; //ReadRm ALU
+    8'b101x0101: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00010001000000001001; //ALU ALU-ADDAND
+   // 8'b10111101: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001110000000001011; //ALU MVN
+    8'b10100101: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00011001000000001001; //ALU MOV
+    8'b10101101: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00010001000000001011; //ALU ALU-CMP
+    8'b1011x110: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} = 20'b00001101000101000001; //WriteRd ALU
+    8'b10100110: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} = 20'b00001101000101000001; //WriteRd ALU
+    8'b1011x111: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} = 20'b00001101000101000001; //WriteRd ALU
+    8'b10100111: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} = 20'b00001101000101000001; //WriteRd ALU
+    8'b01100100: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00010101000000001001; //sximm5 ALU STRLDR
+    8'b10000100: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00010101000000001001; //sximm5 ALU STRLDR
+    8'b01100101: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000100001; //msel=1 STRLDR
+    8'b10000101: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000100001; //msel=1 STRLDR
+    8'b01100110: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} = 20'b00001110000101000001; //write=1 LDR
+    8'b01100111: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} = 20'b00001110000101000011; //write=1 LDR
+    8'b10000110: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000100000001; //STR readRd into B
+    8'b10000111: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000010011; //mwrite=1 STR
+    8'b00100100: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000101; //execb=1 B
+    8'b00100101: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001; //Wait for RAM PC B
+    8'b111xx000: {loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001; //HALT
+    default:{loadir, loada, loadb, loadc, asel, bsel, vsel, nsel, write, msel, mwrite, loads, execb, incp, tsel} <= 20'b00001101000000000001;
+    endcase
+  end
+  
+  
+    
+endmodule  
+
+   
+    
+    
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+
+  
+  

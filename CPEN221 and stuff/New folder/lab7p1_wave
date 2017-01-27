@@ -1,0 +1,40 @@
+onerror {resume}
+quietly WaveActivateNextPane {} 0
+add wave -noupdate /PC_RAM_tb/PC_out_sim
+add wave -noupdate /PC_RAM_tb/tsel_sim
+add wave -noupdate /PC_RAM_tb/incp_sim
+add wave -noupdate /PC_RAM_tb/execb_sim
+add wave -noupdate /PC_RAM_tb/sximm8_sim
+add wave -noupdate /PC_RAM_tb/status_sim
+add wave -noupdate /PC_RAM_tb/cond_sim
+add wave -noupdate /PC_RAM_tb/clk_sim
+add wave -noupdate /PC_RAM_tb/reset_sim
+add wave -noupdate /PC_RAM_tb/DUT/PCin
+add wave -noupdate /PC_RAM_tb/DUT/PCchoice
+add wave -noupdate /PC_RAM_tb/DUT/pcrel
+add wave -noupdate /PC_RAM_tb/DUT/pctgt
+add wave -noupdate /PC_RAM_tb/DUT/pc1
+add wave -noupdate /PC_RAM_tb/DUT/pc_next
+add wave -noupdate /PC_RAM_tb/DUT/taken
+add wave -noupdate /PC_RAM_tb/DUT/loadpc
+add wave -noupdate /PC_RAM_tb/DUT/BR/cs
+add wave -noupdate /PC_RAM_tb/DUT/BR/NV
+add wave -noupdate /PC_RAM_tb/DUT/BR/NVZ
+TreeUpdate [SetDefaultTree]
+WaveRestoreCursors {{Cursor 1} {374 ps} 0}
+quietly wave cursor active 1
+configure wave -namecolwidth 150
+configure wave -valuecolwidth 100
+configure wave -justifyvalue left
+configure wave -signalnamewidth 1
+configure wave -snapdistance 10
+configure wave -datasetprefix 0
+configure wave -rowmargin 4
+configure wave -childrowmargin 2
+configure wave -gridoffset 0
+configure wave -gridperiod 1
+configure wave -griddelta 40
+configure wave -timeline 0
+configure wave -timelineunits ps
+update
+WaveRestoreZoom {25 ps} {393 ps}
